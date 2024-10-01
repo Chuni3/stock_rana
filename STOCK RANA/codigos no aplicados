@@ -1,0 +1,79 @@
+
+import tkinter as tk
+from tkinter import ttk
+
+class StockApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Gestión de Stock")
+
+        # Configurar la ventana principal
+        self.geometry("600x400")
+        self.config(bg="darkgray")
+
+        # Crear un contenedor para las diferentes pantallas
+        self.frames = {}
+
+        # Crear las diferentes pantallas (frames)
+        for F in (MenuPrincipal, PantallaMovimientos, PantallaStockBajo):
+            frame = F(self, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.mostrar_frame(MenuPrincipal)
+
+    def mostrar_frame(self, contenedor):
+        frame = self.frames[contenedor]
+        frame.tkraise()
+
+class MenuPrincipal(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.config(bg="darkgray")
+
+        label = tk.Label(self, text="Menú Principal", font=("Comic Sans MS", 18), bg="darkgray", fg="black")
+        label.pack(pady=10)
+
+        # Botón para ver historial de movimientos
+        boton_movimientos = tk.Button(self, text="Historial de Movimientos", font=("Comic Sans MS", 12),
+                                      bg="orange", command=lambda: controller.mostrar_frame(PantallaMovimientos))
+        boton_movimientos.pack(pady=10)
+
+        # Botón para ver el reporte de stock bajo
+        boton_stock_bajo = tk.Button(self, text="Reporte de Stock Bajo", font=("Comic Sans MS", 12),
+                                     bg="orange", command=lambda: controller.mostrar_frame(PantallaStockBajo))
+        boton_stock_bajo.pack(pady=10)
+
+class PantallaMovimientos(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.config(bg="darkgray")
+
+        label = tk.Label(self, text="Historial de Movimientos", font=("Comic Sans MS", 18), bg="darkgray", fg="black")
+        label.pack(pady=10)
+
+        # Botón para volver al menú principal
+        boton_volver = tk.Button(self, text="Volver al Menú", font=("Comic Sans MS", 12),
+                                 bg="orange", command=lambda: controller.mostrar_frame(MenuPrincipal))
+        boton_volver.pack(pady=10)
+
+class PantallaStockBajo(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.config(bg="darkgray")
+
+        label = tk.Label(self, text="Reporte de Stock Bajo", font=("Comic Sans MS", 18), bg="darkgray", fg="black")
+        label.pack(pady=10)
+
+        # Botón para volver al menú principal
+        boton_volver = tk.Button(self, text="Volver al Menú", font=("Comic Sans MS", 12),
+                                 bg="orange", command=lambda: controller.mostrar_frame(MenuPrincipal))
+        boton_volver.pack(pady=10)
+
+# Iniciar la aplicación
+if __name__ == "__main__":
+    app = StockApp()
+    app.mainloop()
